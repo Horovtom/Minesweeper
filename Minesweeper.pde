@@ -49,6 +49,6 @@ void mousePressed() {
   grid.onMousePressed(mouseX, mouseY, mouseButton);
 }
 
-void cellRevealed() {
-  score++;
+void cellRevealed(int row, int col) {
+  grid.reveal(row, col);
 }

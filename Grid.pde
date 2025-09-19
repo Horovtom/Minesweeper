@@ -17,7 +17,7 @@ class Grid {
 
     for (int row = 0; row < size; row++) {
       for (int col = 0; col < size; col++) {
-        set(row, col, new Cell(x +row * cellSize, y + col * cellSize, cellSize, cellSize));
+        set(row, col, new Cell(row, col, x +row * cellSize, y + col * cellSize, cellSize, cellSize));
       }
     }
   }
@@ -33,6 +33,31 @@ class Grid {
           break;
       }
       get(row, col).hasMine = true;
+    }
+    computeNeighbors();
+  }
+
+  void computeNeighbors() {
+    for (int row = 0; row < size; row++) {
+      for (int col = 0; col < size; col++) {
+        Cell cell = get(row, col);
+        if (cell.hasMine)
+          cell.neighbors = -1;
+        else {
+          int neighbors = 0;
+          for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+              int neighRow = row + i;
+              int neighCol = col + j;
+              if (neighRow >=0 && neighRow < size && neighCol >= 0 && neighCol < size) {
+                if (get(neighRow, neighCol).hasMine)
+                  neighbors++;
+              }
+            }
+          }
+          cell.neighbors = neighbors;
+        }
+      }
     }
   }
 
@@ -66,5 +91,10 @@ class Grid {
         get(row, col).isRevealed = true;
       }
     }
+  }
+
+  void reveal(int row, int col) {
+    get(row, col).isRevealed = true;
+    score++;
   }
 }

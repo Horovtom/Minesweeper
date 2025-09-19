@@ -1,12 +1,15 @@
 class Cell {
   int x, y, w, h;
+  int row, col;
   boolean hasMine = false;
   int neighbors = 0;
   boolean isRevealed = false;
   boolean hasFlag = false;
   boolean isCauseOfLosing = false;
 
-  Cell(int x, int y, int w, int h) {
+  Cell(int row, int col, int x, int y, int w, int h) {
+    this.row = row;
+    this.col = col;
     this.x = x;
     this.y = y;
     this.w = w;
@@ -88,7 +91,7 @@ class Cell {
         isCauseOfLosing = true;
         gameLost(mX, mY, mB);
       } else {
-        cellRevealed();
+        cellRevealed(row, col);
       }
     } else if (mB == RIGHT) {
       if (!isRevealed) {
