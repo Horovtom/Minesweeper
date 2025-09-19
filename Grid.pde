@@ -62,10 +62,14 @@ class Grid {
   }
 
   Cell get(int row, int col) {
+    if (row < 0 || col < 0 || row >= size || col >= size)
+      return null;
     return grid[row][col];
   }
 
   void set(int row, int col, Cell cell) {
+    if (row < 0 || col < 0 || row >= size || col >= size)
+      return;
     grid[row][col] = cell;
   }
 
@@ -94,7 +98,39 @@ class Grid {
   }
 
   void reveal(int row, int col) {
-    get(row, col).isRevealed = true;
+    Cell cell = get(row, col);
+    if (cell == null || cell.isRevealed)
+      return;
+    cell.isRevealed = true;
     score++;
+
+    if (cell.neighbors == 0) {
+      for (int i = -1; i < 2; i++)
+        for (int j = -1; j < 2; j++)
+          reveal(row + i, col + j);
+    } else {
+      revealIfZero(row -1, col);
+      revealIfZero(row +1, col);
+      revealIfZero(row, col-1);
+      revealIfZero(row, col+1);
+    }
+  }
+
+  void revealIfZero(int row, int col) {
+    Cell cell = get(row, col);
+    if (cell == null || cell.isRevealed || cell.neighbors != 0)
+      return;
+    reveal(row, col);
+  }
+
+  boolean isWon() {
+    for (int row = 0; row < size; row++) {
+      for (int col = 0; col < size; col++) {
+        Cell cell = get(row, col);
+        if (!(cell.hasMine || cell.isRevealed))
+          return false;
+      }
+    }
+    return true;
   }
 }

@@ -5,6 +5,7 @@ final int MINE_COUNT = 10;
 Grid grid;
 int score = 0;
 boolean losingState = false;
+boolean winningState = false;
 
 void setup() {
   size(640, 660);
@@ -13,6 +14,7 @@ void setup() {
 
 void restartGame() {
   losingState = false;
+  winningState = false;
   score = 0;
   grid = new Grid(GRID_SIZE, 0, 20, width, height - 20);
   grid.generateMines(MINE_COUNT);
@@ -25,6 +27,13 @@ void draw() {
   textSize(20);
   text("Score: " + score, 1, 1);
   grid.display();
+
+  if (winningState) {
+    textSize(60);
+    textAlign(CENTER, CENTER);
+    fill(0, 0, 255);
+    text("You won!", width / 2, height / 2);
+  }
 }
 
 void gameLost(int mX, int mY, int mB) {
@@ -41,7 +50,7 @@ void gameLost(int mX, int mY, int mB) {
 }
 
 void mousePressed() {
-  if (losingState) {
+  if (losingState || winningState) {
     restartGame();
     return;
   }
@@ -51,4 +60,7 @@ void mousePressed() {
 
 void cellRevealed(int row, int col) {
   grid.reveal(row, col);
+  if (grid.isWon()) {
+    winningState = true;
+  }
 }

@@ -86,8 +86,8 @@ class Cell {
         return;
       }
 
-      isRevealed = true;
       if (hasMine) {
+        isRevealed = true;
         isCauseOfLosing = true;
         gameLost(mX, mY, mB);
       } else {
