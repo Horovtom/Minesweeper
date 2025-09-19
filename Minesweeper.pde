@@ -34,6 +34,12 @@ void draw() {
     fill(0, 0, 255);
     text("You won!", width / 2, height / 2);
   }
+  else if (losingState) {
+    textSize(60);
+    textAlign(CENTER, CENTER);
+    fill(255, 0, 0);
+    text("You lost!", width / 2, height / 2);  
+  }
 }
 
 void gameLost(int mX, int mY, int mB) {
